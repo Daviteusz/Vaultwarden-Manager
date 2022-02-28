@@ -144,7 +144,7 @@
         sleep 2
         if [ -f "$WEB_DIR/vw-version.json" ];then
             if [[ "$(web_curl_version)" == "$(web_installed_version)" ]]; then
-                echo "- Web-Vault jest aktualny. Powrót do Menu..."
+                echo "- Web-Vault jest aktualny. Powrót do menu..."
                 sleep 2
                 menu
             else
@@ -168,7 +168,9 @@
         tar -xf "$tarball"
         rm "$tarball"
         sleep 2
-        echo "  > Instalacja ukończona"
+        echo "  > Instalacja ukończona. Powrót do menu..."
+        sleep 2
+        menu
     }
 # - Web Vault - Sprawdzenie najnowszej wersji
     function web_curl_version () {
@@ -422,6 +424,7 @@
                     menu
                 else
                     echo "Naciśnięto błędny klawisz, kończenie..."
+                    sleep 2
                     menu
                 fi
             fi  
