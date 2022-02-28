@@ -142,7 +142,7 @@
 # - Web Vault - Główny - weryfikacja i przywołanie instalatora
     function web-vault_main() {
         sleep 2
-        if [ -f "$WEB_DIR/bwrs-version.json" ];then
+        if [ -f "$WEB_DIR/vw-version.json" ];then
             if [[ "$(web_curl_version)" == "$(web_installed_version)" ]]; then
                 echo "- Web-Vault jest aktualny. Powrót do Menu..."
                 sleep 3
@@ -180,7 +180,7 @@
     }
 # - Web Vault - Sprawdzenie zainstalowanej wersji
     function web_installed_version () {
-        cat "$WEB_DIR/bwrs-version.json" \
+        cat "$WEB_DIR/vw-version.json" \
         | grep 'version' \
         | cut -d '"' -f 4
     }
