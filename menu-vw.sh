@@ -145,7 +145,7 @@
         if [ -f "$WEB_DIR/vw-version.json" ];then
             if [[ "$(web_curl_version)" == "$(web_installed_version)" ]]; then
                 echo "- Web-Vault jest aktualny. Powrót do Menu..."
-                sleep 3
+                sleep 2
                 menu
             else
                 web-vault_install
@@ -318,7 +318,6 @@
         if [ -d "$GIT_DIR" ]; then
             cd "$GIT_DIR" || exit
             if [ -f "$BINARY" ]; then
-                sleep 2
                 if [[ "$(git_latest_tag)" != "$(binary_version)" ]]; then
                     echo "- Uaktualnienie kodu źródłowego..."
                     git checkout -q "$(git_latest_tag)"
