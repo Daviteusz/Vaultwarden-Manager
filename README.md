@@ -1,4 +1,4 @@
-# Vaultwarden Menu
+# Menedżer Vaultwarden
 - Skrypt pozwala w prosty sposób zainstalować vaultwarden na hostingu ct8.pl
 - Vaultwarden jest budowany ze źródła (trwa to około 20 minut)
 - Menedżer umożliwia skonfigurowanie supervisora pod wybraną domenę, sprawdzanie czy są aktualizacje, uaktualnienie do nowych wersji przyrostowo.
