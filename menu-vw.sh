@@ -81,9 +81,10 @@
         }
 
 # - Menedżer Vaultwarden
+    MENU_VERSION="0.9.1"
     menu(){
         echo -ne "
-            Menedżer Vaultwarden v0.9.1
+            Menedżer Vaultwarden v$MENU_VERSION
     --------------------------------------------
     $(ColorGreen '1)') Instaluj / Aktualizuj
     $(ColorGreen '2)') Sprawdź aktualizacje
