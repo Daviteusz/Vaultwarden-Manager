@@ -56,22 +56,23 @@
             echo -ne "
            Menedżer Supervisor (w budowie)
     --------------------------------------------
-    $(ColorGreen '1)') Stan (status vaultwarden)
-    $(ColorGreen '2)') Uruchom (start vaultwarden)
-    $(ColorGreen '3)') Zatrzymaj (stop vaultwarden)
-    $(ColorGreen '4)') Uruchom ponownie (restart vaultwarden)
-    $(ColorGreen '5)') Wyłącz (shutdown supervisord)
+    $(ColorGreen '1)') Restart Vaultwarden
+    $(ColorGreen '2)') Status
+    $(ColorGreen '3)') #######
+    $(ColorGreen '4)') #######
+    $(ColorGreen '5)') #######
     $(ColorYellow '6)') Skonfiguruj
     $(ColorWhitex '9)') Powrót do menu
     $(ColorWhitex '0)') Wyjście
     $(ColorBlue '- Wybierz opcję:') "
         read -r a
         case $a in
-            1) sv_status ; sv-submenu ;;
-            2) sv_on ; sv-submenu ;;
+            1) sv_restart ; sv-submenu ;;
+            2) sv_status ; sv-submenu ;;
             3) sv_off ; sv-submenu ;;
-            4) sv_shutdown ; sv-submenu ;;
-            5) sv_main ; sv-submenu ;;
+            4) sv_off ; sv-submenu ;;
+            5) sv_off ; sv-submenu ;;
+            6) sv_main ; sv-submenu ;;
             9) menu ;;
             0) exit 0 ;;
             *) echo -e "Nieprawidłowy wybór.""$clear"; WrongCommand;;
@@ -527,6 +528,12 @@
             sleep 2
             menu
         fi
+    }
+
+# - Supervisor - Nie działające komendy
+    function sv_off () {
+        sleep 1
+        echo "Komendy jeszcze nie działają, zawróć"
     }
 
 ##--------------------##
