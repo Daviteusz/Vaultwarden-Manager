@@ -54,7 +54,7 @@
 # - Menedżer Supervisor
     sv-submenu(){
             echo -ne "
-                Menedżer Supervisor
+           Menedżer Supervisor (w budowie)
     --------------------------------------------
     $(ColorGreen '1)') Stan (status vaultwarden)
     $(ColorGreen '2)') Uruchom (start vaultwarden)
@@ -121,7 +121,7 @@
             supervisorctl -c "$SV_CONF" stop vaultwarden &>/dev/null
         fi
         sleep 2
-        dirs_config
+        make_dirs
         sleep 2
         cargo_rustup_install
         sleep 2
@@ -307,14 +307,11 @@
     }
 
 # - Vaultwarden - Generator podstawowych katalogów
-    function dirs_config () {
-        if [[ -d $APP_DIR && -d $DATA_DIR ]]; then
-            sleep 0
-        else
+    function make_dirs () {
+        if ! [[ -d $DATA_DIR ]]; then
             echo "- Konfiguracja katalogów..."
-            mkdir -p "$APP_DIR"
-            sleep 1
-            mkdir -p "$DATA_DIR"
+            cd "$WORK_DIR" || exit
+            mkdir -p "$APP/data"
             sleep 2
         fi
     }
@@ -515,13 +512,13 @@
             # Missing
             # Something
     }
-# - Supervisor - Restart
+# - Supervisor - Restart Vaultwarden
     function sv_restart () {
         if [ -S "$SV_SOCK" ]; then
             supervisorctl -c "$SV_CONF" restart vaultwarden
         fi
     }
-# - Supervisor - status vaultwarden
+# - Supervisor - Status Vaultwarden
     function sv_status () {
         if [ -S "$SV_SOCK" ]; then
             supervisorctl -c "$SV_CONF" status vaultwarden
