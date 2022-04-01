@@ -82,11 +82,12 @@
 # - Menedżer Vaultwarden
     menu(){
         echo -ne "
-                Menedżer Vaultwarden
+            Menedżer Vaultwarden v0.9.1
     --------------------------------------------
     $(ColorGreen '1)') Instaluj / Aktualizuj
     $(ColorGreen '2)') Sprawdź aktualizacje
     $(ColorYellow '3)') Menedżer Supervisor
+    $(ColorWhitex '4)') Zaktualizuj Menedżer
     $(ColorWhitex '0)') Wyjście
     $(ColorBlue '- Wybierz opcję:') "
         read -r a
@@ -94,6 +95,7 @@
             1) vw_main ; menu ;;
             2) check_updates ; menu ;;
             3) sv-submenu ; menu ;;
+            4) menu_update
             0) exit 0 ;;
             *) echo -e "Nieprawidłowy wybór.""$clear"; WrongCommand;;
         esac
@@ -529,11 +531,33 @@
             menu
         fi
     }
+    
+# - Menu - Vaultwarden - Aktualizacja Menedżera
+    function menu_update () {
+        echo "
+        ##-----------------------##
+        # Menedżer - aktualizacja #
+        ##-----------------------##"
+        echo " - Pobieranie nowej wersji..."
+        sleep 2
+        cd "$(dirname "$(find "$HOME" -type f -name menu-vw.sh | head -1)")"
+        curl -s https://api.github.com/repos/daviteusz/Vaultwarden-Manager/releases/latest \
+        | grep 'browser_download_url.*.sh"' \
+        | cut -d : -f 2,3 \
+        | tr -d \" \
+        | xargs -n 1 curl -O -sSL
+        echo " - Nadawanie uprawnień..."
+        sleep 2
+        chmod +x menu-vw.sh
+        echo " - Ponowne uruchamianie..."
+        sleep 2
+        bash ./menu-vw.sh
 
-# - Supervisor - Nie działające komendy
+# - Menu - Supervisor - Nie działające komendy
     function sv_off () {
         sleep 1
         echo "Komendy jeszcze nie działają, zawróć"
+        sleep 2
     }
 
 ##--------------------##
