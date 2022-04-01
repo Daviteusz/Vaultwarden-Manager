@@ -22,6 +22,7 @@
     RUSTUP_BIN="$APP_DIR/programs/cargo/bin/rustup"
     CARGO_BIN="$APP_DIR/programs/cargo/bin/cargo"
     CARGO_ENV="$APP_DIR/programs/cargo/env"
+    CARGO_INC="CARGO_INCREMENTAL=1"
 
 # - Supervisor
     SV_DIRNAME="supervisor"
@@ -95,7 +96,7 @@
             1) vw_main ; menu ;;
             2) check_updates ; menu ;;
             3) sv-submenu ; menu ;;
-            4) menu_update
+            4) menu_update ; menu ;;
             0) exit 0 ;;
             *) echo -e "Nieprawidłowy wybór.""$clear"; WrongCommand;;
         esac
@@ -290,6 +291,7 @@
 # - Cargo - Instalator
     function cargo_rustup_install () {
         if [[ -f "$RUSTUP_BIN" && -f "$CARGO_BIN" ]]; then
+            # shellcheck source=/dev/null
             . "$CARGO_ENV"
         else
             echo "- Rust i Cargo - Instalacja (Może to chwilę potrwać)... "
@@ -298,6 +300,7 @@
             sh -s -- -y -q --no-modify-path --profile minimal --default-toolchain nightly &> /dev/null
             sleep 2
             if [[ -f "$RUSTUP_BIN" && -f "$CARGO_BIN" ]];then
+                # shellcheck source=/dev/null
                 . "$CARGO_ENV"
                 echo "  > Instalacja ukończona"
                 sleep 2
@@ -344,7 +347,7 @@
         if [ -f "$BINARY" ]; then
             cargo update
             cargo build --features sqlite --release -j1 \
-            | CARGO_INCREMENTAL=1
+            | $CARGO_INC
             if [ -f "$BINARY" ]; then
                 sv_restart
                 echo "- Aktualizacja ukończona"
@@ -413,8 +416,7 @@
     }
 # - Web-Vault - Weryfikator zainstalowanej wersji
     function web_installed_version () {
-        cat "$WEB_DIR/vw-version.json" \
-        | grep 'version' \
+        grep 'verion' "$WEB_DIR/vw-version.json" \
         | cut -d '"' -f 4
     }
 
@@ -531,7 +533,7 @@
             menu
         fi
     }
-    
+
 # - Menu - Vaultwarden - Aktualizacja Menedżera
     function menu_update () {
         echo "
@@ -540,7 +542,7 @@
         ##-----------------------##"
         echo " - Pobieranie nowej wersji..."
         sleep 2
-        cd "$(dirname "$(find "$HOME" -type f -name menu-vw.sh | head -1)")"
+        cd "$(dirname "$(find "$HOME" -type f -name menu-vw.sh | head -1)")" || exit
         curl -s https://api.github.com/repos/daviteusz/Vaultwarden-Manager/releases/latest \
         | grep 'browser_download_url.*.sh"' \
         | cut -d : -f 2,3 \
@@ -552,6 +554,7 @@
         echo " - Ponowne uruchamianie..."
         sleep 2
         bash ./menu-vw.sh
+    }
 
 # - Menu - Supervisor - Nie działające komendy
     function sv_off () {
