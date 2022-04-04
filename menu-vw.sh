@@ -556,7 +556,7 @@
         chmod +x menu-vw.sh
         echo " - Ponowne uruchamianie..."
         sleep 2
-        bash ./menu-vw.sh
+        exec bash ./menu-vw.sh
     }
 
 # - Menu - Supervisor - Nie działające komendy
