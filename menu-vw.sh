@@ -4,6 +4,9 @@
 ##------------------------------##
 # Aliasy, ścieżki, kolory i MENU #
 ##------------------------------##
+# - Menedżer
+    MENU_VERSION="0.9.1"
+
 # - Vaultwarden
     APP="vaultwarden"
     WEB="web-vault"
@@ -29,7 +32,7 @@
     SV_DIR="$WORK_DIR/$SV_DIRNAME"
     SV_CONF="$SV_DIR/supervisor.conf"
     SV_SOCK="$SV_DIR/supervisor.sock"
-    GET_SV_CONF="https://gist.githubusercontent.com/Daviteusz/425dba601a4cc2c32f572762d49bc5ae/raw/6f25077ed5f2f55a47656bcfba41353998ac2147/supervisor.conf"
+    GET_SV_CONF="https://raw.githubusercontent.com/Daviteusz/Vaultwarden-Manager/main/resources/supervisor.conf"
 
 # - Aliasy kolorów
     green='\e[32m'
@@ -81,7 +84,6 @@
         }
 
 # - Menedżer Vaultwarden
-    MENU_VERSION="0.9.1"
     menu(){
         echo -ne "
             Menedżer Vaultwarden v$MENU_VERSION
