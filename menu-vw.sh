@@ -5,7 +5,7 @@
 # Aliasy, ścieżki, kolory i MENU #
 ##------------------------------##
 # - Menedżer
-    MENU_VERSION="0.9.1"
+    MENU_VERSION="0.9.2"
 
 # - Vaultwarden
     APP="vaultwarden"
