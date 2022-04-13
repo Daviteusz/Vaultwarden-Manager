@@ -115,7 +115,7 @@
         # Vaultwarden - instalacja / aktualizacja #
         ##---------------------------------------##"
         if [ -d "$GIT_DIR" ]; then
-            if [ -f "$BINARY" ]; then 
+            if [ -f "$BINARY" ]; then
                 if [[ "$(git_latest_tag)" == "$(binary_version)" ]]; then
                     sleep 1
                     echo "- Vaultwarden jest aktualny."
@@ -148,7 +148,7 @@
         else
             echo -e "- Pobieranie kodu źródłowego $APP..."
             sleep 2
-            git clone -q "$GIT_URL" "$GIT_DIR" 
+            git clone -q "$GIT_URL" "$GIT_DIR"
             cd "$GIT_DIR" || exit
             git checkout -q "$(git_latest_tag)"
             sleep 2
@@ -164,7 +164,7 @@
         echo "
         ##------------------------##
         # Wyszukiwanie uaktualnień #
-        ##------------------------##"   
+        ##------------------------##"
         sleep 2
         if [ -f "$BINARY" ]; then
             cd "$GIT_DIR" || exit
@@ -188,7 +188,7 @@
                         echo "Naciśnięto błędny klawisz, kończenie..."
                         menu
                     fi
-                fi  
+                fi
             fi
         else
             echo "- Vaultwarden jeszcze nie zainstalowano."
@@ -202,7 +202,7 @@
                     echo "Naciśnięto błędny klawisz, kończenie..."
                     menu
                 fi
-            fi  
+            fi
         fi
         sleep 2
         if [ -d "$WEB_DIR" ]; then
@@ -227,7 +227,7 @@
                         echo "Naciśnięto błędny klawisz, kończenie..."
                         menu
                     fi
-                fi  
+                fi
             fi
         else
             echo "  $WEB jeszcze nie zainstalowano"
@@ -243,7 +243,7 @@
                     sleep 2
                     menu
                 fi
-            fi  
+            fi
         fi
     }
 
@@ -271,7 +271,7 @@
                     sleep 2
                     menu
                 fi
-            fi  
+            fi
         else
             sv_config
         fi
@@ -309,7 +309,7 @@
                 sleep 2
             else
                 echo "  > Instalacja nie powiodła się. Kończenie..."
-                sleep 2 
+                sleep 2
                 menu
             fi
         fi
@@ -387,7 +387,7 @@
             else
                 web-vault_install
             fi
-        else    
+        else
             web-vault_install
         fi
     }
@@ -419,7 +419,7 @@
     }
 # - Web-Vault - Weryfikator zainstalowanej wersji
     function web_installed_version () {
-        grep 'verion' "$WEB_DIR/vw-version.json" \
+        grep 'version' "$WEB_DIR/vw-version.json" \
         | cut -d '"' -f 4
     }
 
@@ -429,7 +429,7 @@
         | grep 'browser_download_url.*tar.gz"' \
         | cut -d : -f 2,3 \
         | tr -d \" \
-        | xargs -n 1 curl -O -sSL 
+        | xargs -n 1 curl -O -sSL
     }
 
 # - Supervisor - Sprawdzenie, czy jest wygenerowany port
