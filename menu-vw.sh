@@ -5,7 +5,7 @@
 # Aliasy, ścieżki, kolory i MENU #
 ##------------------------------##
 # - Menedżer
-    MENU_VERSION="0.9.2"
+    MENU_VERSION="0.9.3"
 
 # - Vaultwarden
     APP="vaultwarden"
@@ -90,8 +90,7 @@
     --------------------------------------------
     $(ColorGreen '1)') Instaluj / Aktualizuj
     $(ColorGreen '2)') Sprawdź aktualizacje
-    $(ColorYellow '3)') Menedżer Supervisor
-    $(ColorWhitex '4)') Zaktualizuj Menedżer
+    $(ColorYellow '3)') Zarządzanie Supervisor
     $(ColorWhitex '0)') Wyjście
     $(ColorBlue '- Wybierz opcję:') "
         read -r a
@@ -99,7 +98,6 @@
             1) vw_main ; menu ;;
             2) check_updates ; menu ;;
             3) sv-submenu ; menu ;;
-            4) menu_update ; menu ;;
             0) exit 0 ;;
             *) echo -e "Nieprawidłowy wybór.""$clear"; WrongCommand;;
         esac
@@ -230,7 +228,7 @@
                 fi
             fi
         else
-            echo "  $WEB jeszcze nie zainstalowano"
+            echo "  web-vault jeszcze nie zainstalowano"
             sleep 2
             read -r -p "  Chcesz pobrać web-vault? [y/N] " response
             if [[ "$response" =~ ^([yY])$ ]]; then
@@ -283,7 +281,7 @@
 # - System - Weryfikator kompatybilności
     function system_compatiblity_check () {
         if [[ $(uname -n) =~ ct8.pl ]]; then
-            menu
+            menu_update_ask
         else
             echo "Skrypt działa wyłącznie na hostingu ct8.pl..."
             sleep 2
@@ -537,37 +535,58 @@
         fi
     }
 
-# - Menu - Vaultwarden - Aktualizacja Menedżera
-    function menu_update () {
-        echo "
-        ##-----------------------##
-        # Menedżer - aktualizacja #
-        ##-----------------------##"
-        echo " - Pobieranie nowej wersji..."
-        sleep 2
-        cd "$(dirname "$(find "$HOME" -type f -name menu-vw.sh | head -1)")" || exit
-        curl -s https://api.github.com/repos/daviteusz/Vaultwarden-Manager/releases/latest \
-        | grep 'browser_download_url.*.sh"' \
-        | cut -d : -f 2,3 \
-        | tr -d \" \
-        | xargs -n 1 curl -O -sSL
-        echo " - Nadawanie uprawnień..."
-        sleep 2
-        chmod +x menu-vw.sh
-        echo " - Ponowne uruchamianie..."
-        sleep 2
-        exec bash ./menu-vw.sh
-    }
-
-# - Menu - Supervisor - Nie działające komendy
+# - Menu - Supervisor - Niedziałające komendy
     function sv_off () {
         sleep 1
-        echo "Komendy jeszcze nie działają, zawróć"
+        echo "Komendy jeszcze nie działają"
         sleep 2
+    }
+# - Menu - Aktualizacja menedżera
+    function menu_latest_tag () {
+        curl -s https://api.github.com/repos/daviteusz/Vaultwarden-Manager/releases/latest \
+        | jq -r ".tag_name" \
+        | cut -d v -f 2,3
+    }
+
+    function menu_update_ask () {
+        if [[ $MENU_VERSION < $(menu_latest_tag) ]]; then
+            echo "
+            ##-----------------------##
+            # Menedżer - aktualizacja #
+            ##-----------------------##"
+            echo " - Dostępna jest nowa wersja menedżera..."
+            sleep 2
+            read -r -p "   Zaktualizować? [y/N] " response
+            if [[ "$response" =~ ^([yY])$ ]]; then
+                echo " - Pobieranie nowej wersji..."
+                sleep 2
+                cd "$(dirname "$(find "$HOME" -type f -name menu-vw.sh | head -1)")" || exit
+                curl -s https://api.github.com/repos/daviteusz/Vaultwarden-Manager/releases/latest \
+                | grep 'browser_download_url.*.sh"' \
+                | cut -d : -f 2,3 \
+                | tr -d \" \
+                | xargs -n 1 curl -O -sSL
+                echo " - Nadawanie uprawnień..."
+                sleep 2
+                chmod +x menu-vw.sh
+                echo " - Ponowne uruchamianie..."
+                sleep 2
+                # shellcheck source=/dev/null
+                . ./menu-vw.sh
+            else
+                if [[ "$response" =~ ^([nN])$ ]]; then
+                    menu
+                else
+                    echo "Naciśnięto błędny klawisz, kończenie..."
+                    exit
+                fi
+            fi
+        fi
     }
 
 ##--------------------##
 #  Podstawowe komendy  #
 ##--------------------##
 system_compatiblity_check
+menu_update_ask
 menu
